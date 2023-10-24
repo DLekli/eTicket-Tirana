@@ -6,7 +6,7 @@ namespace eTicket.Data.Base
 {
     public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {
-        //First branch test
+        
         private readonly AppDbContext _context;
 
         public EntityBaseRepository(AppDbContext context)
