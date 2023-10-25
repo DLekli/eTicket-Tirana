@@ -1,6 +1,7 @@
 ﻿using eTicket.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq.Expressions;
 
 namespace eTicket.Data.Base
 {
@@ -29,7 +30,15 @@ namespace eTicket.Data.Base
         }
 
         public async Task<IEnumerable<T>> GetALlAsync()=>  await _context.Set<T>().ToListAsync();
-        
+
+        public async Task<IEnumerable<T>> GetALlAsync(params Expression<Func<T, object>>[] includeProperties)
+        {
+            //Set the entity to the context file
+            //Add all the properties, so all the include properties after the query itself
+            IQueryable<T> query = _context.Set<T>();
+            query = includeProperties.Aggregate(query, (current, includeProperty) =>current.Include(includeProperty));
+            return await query.ToListAsync();
+        }
 
         public async Task<T> GetByIdAsync(int id)=> await _context.Set<T>().FirstOrDefaultAsync(n => n.Id == id);
          
