@@ -28,8 +28,13 @@ namespace eTicket.Controllers
 
             if(!string.IsNullOrEmpty(searchString))
             {
-                var filteredResult = allMovies.Where(n => n.Name.Contains(searchString)
-                || n.Description.Contains(searchString)).ToList();
+                //For to get result and if we input in lowercase or in uppercase
+                var filteredResult = allMovies
+               .Where(n => n.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0
+               || n.Description.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
+               .ToList();
+                //var filteredResult = allMovies.Where(n => n.Name.Contains(searchString)
+                //|| n.Description.Contains(searchString)).ToList();
                 return View("Index",filteredResult);
             }
 

@@ -1,4 +1,5 @@
 using eTicket.Data;
+using eTicket.Data.Cart;
 using eTicket.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,13 @@ builder.Services.AddScoped<IProducersService, ProducersService>();
 builder.Services.AddScoped<ICienmasServices,CinemasServices>();
 builder.Services.AddScoped<IMoviesService,MoviesService>();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+builder.Services.AddSession();
+
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -28,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

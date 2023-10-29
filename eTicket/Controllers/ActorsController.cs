@@ -17,6 +17,7 @@ namespace eTicket.Controllers
             var data = await _service.GetALlAsync();
             return View(data);
         }
+  
 
         //Get: Actors/Create
         public IActionResult Create()
@@ -33,7 +34,7 @@ namespace eTicket.Controllers
             }
 
             await _service.AddAsync(actor);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); 
 
         }
 
