@@ -1,7 +1,9 @@
 ﻿using eTicket.Data.Cart;
 using eTicket.Data.Services;
 using eTicket.Data.ViewModels;
+using eTicket.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace eTicket.Controllers
 {
@@ -19,9 +21,11 @@ namespace eTicket.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string userId = "";
-
-            var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+            //The Name Identifier in used for ID
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+            
+            var orders = await _ordersService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
             return View(orders);
         }
 
