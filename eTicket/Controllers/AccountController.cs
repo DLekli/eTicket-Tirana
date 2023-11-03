@@ -4,6 +4,7 @@ using eTicket.Data.ViewModels;
 using eTicket.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eTicket.Controllers
 {
@@ -18,6 +19,12 @@ namespace eTicket.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;  
+        }
+
+        public async Task<IActionResult> Users ()
+        {
+            var users = await _context.Users.ToListAsync();
+            return View(users);
         }
 
 
@@ -91,6 +98,11 @@ namespace eTicket.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Movies");
+        }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
         }
     }
 }
